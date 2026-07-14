@@ -18,6 +18,7 @@ This framework is structured to keep tests clean, maintainable, and readable. It
 
 ```text
 ecommerce-automation/
+├── .gitignore                # Git ignore configuration
 ├── fixtures/
 │   └── testFixture.ts        # Custom Playwright fixture to inject Page Objects
 ├── pages/
@@ -27,9 +28,11 @@ ecommerce-automation/
 │   ├── CartPage.ts           # Page Object for the shopping cart
 │   └── CheckoutPage.ts       # Page Object for the multi-step checkout workflow
 ├── test-data/
-│   └── checkoutData.ts       # Test data for credentials, products, and checkout forms
+│   ├── checkoutData.ts       # Test data for credentials, products, and checkout forms
+│   └── loginData.ts          # Test data for valid, invalid, and locked-out user scenarios
 ├── tests/
-│   └── checkout.spec.ts      # End-to-end checkout test specifications
+│   ├── checkout.spec.ts      # End-to-end checkout test specifications
+│   └── login.spec.ts         # Login positive, negative, and edge test scenarios
 ├── playwright.config.ts      # Global Playwright settings and browser configurations
 ├── tsconfig.json             # TypeScript compiler options
 └── package.json              # Project dependencies and script commands
@@ -72,11 +75,11 @@ All page classes inherit from a base page class and expose clean locators and ac
 
 #### 5. [`pages/LoginPage.ts`](./pages/LoginPage.ts)
 *   **Purpose**: Handles interactions on the Login screen.
-*   **Details**: Declares locators for the username input, password input, login button, and error alerts. Exposes a helper `login(username, password)` method to perform full logins.
+*   **Details**: Declares locators for the username input, password input, login button, and error alerts. Exposes a helper `login(username, password)` method to perform full logins and exposes getters for input elements to enable attribute assertions.
 
 #### 6. [`pages/ProductsPage.ts`](./pages/ProductsPage.ts)
 *   **Purpose**: Handles interactions on the main Inventory/Products catalog screen.
-*   **Details**: Provides locators for the page header and shopping cart icon. Includes a dynamic `addItemToCart(itemName)` method that locates a product by text, filters its container, and clicks the corresponding "Add to cart" button.
+*   **Details**: Provides locators for the page header and shopping cart icon. Includes a dynamic `addItemToCart(itemName)` method that locates a product by text, filters its container, and clicks the corresponding "Add to cart" button. It also provides locators and methods for logging out of the session.
 
 #### 7. [`pages/CartPage.ts`](./pages/CartPage.ts)
 *   **Purpose**: Handles interactions on the Shopping Cart screen.
@@ -99,16 +102,24 @@ All page classes inherit from a base page class and expose clean locators and ac
 ### 💾 Test Data (`/test-data`)
 
 #### 10. [`test-data/checkoutData.ts`](./test-data/checkoutData.ts)
-*   **Purpose**: Stores hardcoded test inputs in a structured TypeScript constant.
+*   **Purpose**: Stores checkout test inputs in a structured TypeScript constant.
 *   **Details**: Contains mock credentials, item titles, and customer details, keeping the actual test script code clean and configurable.
+
+#### 11. [`test-data/loginData.ts`](./test-data/loginData.ts)
+*   **Purpose**: Stores login test credentials, invalid details, and expected validation/error messages.
+*   **Details**: Centralizes authentication test data to allow testing validation messages, field security masking, and placeholders.
 
 ---
 
 ### 🧪 Test Specifications (`/tests`)
 
-#### 11. [`tests/checkout.spec.ts`](./tests/checkout.spec.ts)
-*   **Purpose**: The main end-to-end test suite.
+#### 12. [`tests/checkout.spec.ts`](./tests/checkout.spec.ts)
+*   **Purpose**: End-to-end checkout test specifications.
 *   **Details**: Imports the custom test fixture and test data. Uses `test.step` blocks to organize actions into logical phases (Navigate, Log in, Add to cart, Verify item, Complete checkout info, Confirm order, and Verify success confirmation) for enhanced readability and clear reporting logs.
+
+#### 13. [`tests/login.spec.ts`](./tests/login.spec.ts)
+*   **Purpose**: Test suite covering positive, negative, and other (placeholders, masking, logout redirects) test cases for the login form.
+*   **Details**: Employs data-driven and scenario-based tests to exhaustively cover login validations.
 
 ---
 
