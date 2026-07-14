@@ -4,11 +4,15 @@ import { BasePage } from './BasePage';
 export class ProductsPage extends BasePage {
   private readonly headerTitle: Locator;
   private readonly cartLink: Locator;
+  private readonly burgerMenuButton: Locator;
+  private readonly logoutLink: Locator;
 
   constructor(page: Page) {
     super(page);
     this.headerTitle = page.locator('[data-test="title"]');
     this.cartLink = page.locator('[data-test="shopping-cart-link"]');
+    this.burgerMenuButton = page.locator('#react-burger-menu-btn');
+    this.logoutLink = page.locator('#logout_sidebar_link');
   }
 
   /**
@@ -38,5 +42,13 @@ export class ProductsPage extends BasePage {
    */
   async clickCartLink(): Promise<void> {
     await this.cartLink.click();
+  }
+
+  /**
+   * Action: Clicks the burger menu button and then the logout link to end the session.
+   */
+  async logout(): Promise<void> {
+    await this.burgerMenuButton.click();
+    await this.logoutLink.click();
   }
 }

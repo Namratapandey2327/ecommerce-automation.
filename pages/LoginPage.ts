@@ -40,4 +40,12 @@ export class LoginPage extends BasePage {
   getErrorMessage(): Locator {
     return this.errorMessage;
   }
+
+  getUsernameInput(): Locator {
+    return this.usernameInput;
+  }
+
+  getPasswordInput(): Locator {
+    return this.passwordInput;
+  }
 }
